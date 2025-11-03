@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface',
+    'colorfield',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -116,7 +119,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# ПАПКА, КУДА DJANGO БУДЕТ СОБИРАТЬ ВСЕ СТАТИЧЕСКИЕ ФАЙЛЫ
+# (CSS, JS) ИЗ ВСЕХ ПРИЛОЖЕНИЙ ДЛЯ РАБОТЫ
+STATIC_ROOT = 'static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Указываем Django использовать кастомную модель User
+AUTH_USER_MODEL = "users.User"
