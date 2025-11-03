@@ -142,3 +142,4 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = 'users:profile'
 # URL-адрес для перенаправления после выхода
 LOGOUT_REDIRECT_URL = 'store:product_list'
+# URL-адрес для перенаправления после успешного входа
