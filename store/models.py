@@ -128,6 +128,14 @@ class CartItem(models.Model) :
     def __str__(self) :
         return f"{self.quantity} x {self.product.name} в корзине"
 
+    @property
+    def total_item_price(self) :
+        """
+        Рассчитывает общую стоимость
+        этой позиции корзины (цена * количество).
+        """
+        return self.product.price * self.quantity
+
 
 class Order(models.Model) :
     """

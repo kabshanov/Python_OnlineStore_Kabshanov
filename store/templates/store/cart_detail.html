@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваша корзина</title>
+</head>
+<body>
+    <h1>Ваша корзина</h1>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Количество</th>
+                    <th>Цена за шт.</th>
+                    <th>Общая цена</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price }} руб.</td>
+                    <td>{{ item.total_item_price }} руб.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Итого: {{ total_price }} руб.</h3>
+
+        <a href="{% url 'store:create_order' %}">
+            <button>Оформить заказ</button>
+        </a>
+    {% else %}
+        <p>Ваша корзина пуста.</p>
+    {% endif %}
+
+    <hr>
+    <a href="{% url 'store:product_list' %}">Продолжить покупки</a>
+</body>
+</html>

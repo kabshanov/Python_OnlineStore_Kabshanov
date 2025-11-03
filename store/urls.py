@@ -7,7 +7,10 @@ app_name = 'store'
 urlpatterns = [
     # http://127.0.0.1:8000/products/
     path('products/', views.product_list, name='product_list'),
-
     # http://127.0.0.1:8000/products/1/ (где 1 - это 'pk')
     path('products/<int:pk>/', views.product_detail, name='product_detail'),
+    path('cart/add/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('cart/', views.cart_detail, name='cart_detail'),
+    path('order/create/', views.create_order, name='create_order'),
+    path('order/success/', views.order_success, name='order_success'),
 ]

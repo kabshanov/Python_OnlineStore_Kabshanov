@@ -16,6 +16,17 @@
     <p><strong>На складе:</strong> {{ product.stock }} шт.</p>
 
     <hr>
+
+    <form method="post" action="{% url 'store:add_to_cart' pk=product.pk %}">
+        {% csrf_token %}
+
+        <label for="id_quantity">Количество:</label>
+        {{ add_to_cart_form.quantity }}
+
+        <input type="submit" value="Добавить в корзину">
+    </form>
+
+    <hr>
     <a href="{% url 'store:product_list' %}">Назад к списку товаров</a>
 </body>
 </html>
