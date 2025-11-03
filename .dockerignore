@@ -1,0 +1,17 @@
+# Виртуальное окружение
+.venv
+
+# Файлы Git
+.git
+.gitignore
+
+# Файлы Docker
+docker-compose.yml
+.dockerignore
+
+# Кэш Python
+__pycache__/
+*.pyc
+
+# Файлы IDE
+.idea/

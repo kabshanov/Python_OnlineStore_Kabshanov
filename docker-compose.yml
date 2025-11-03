@@ -1,0 +1,52 @@
+version: '3.8' # Используем более современную версию
+
+services:
+  # 1. Сервис Базы Данных
+  db:
+    image: postgres:14-alpine # (alpine - 'облегченная' версия)
+    volumes:
+      # Эта строка сохраняет данные БД между перезапусками
+      - db-data:/var/lib/postgresql/data/
+    environment:
+      # Мы передаем сюда те же значения, что и в settings.py
+      - POSTGRES_DB=online_store_db
+      - POSTGRES_USER=store_admin
+      - POSTGRES_PASSWORD=ваш_супер_надежный_пароль
+
+  # 2. Сервис Веб-приложения
+  web:
+    build: . # (Собрать образ из Dockerfile в этой папке)
+    volumes:
+      # Монтируем код из нашей папки в /app контейнера
+      # (для "живой" разработки, как в задании)
+      - .:/app
+
+      # Также создаем volume для /media,
+      # чтобы загруженные картинки не пропадали
+      - media-files:/app/media
+
+    ports:
+      - "8000:8000" # Пробрасываем порт 8000
+
+    environment:
+      # Передаем web-контейнеру те же данные, что и db
+      - POSTGRES_DB=online_store_db
+      - POSTGRES_USER=store_admin
+      - POSTGRES_PASSWORD=ваш_супер_надежный_пароль
+
+      # !!! КЛЮЧЕВОЙ МОМЕНТ !!!
+      # Говорим Django (через settings.py), что 'HOST' базы данных -
+      # это сервис с именем 'db', а не 'localhost'
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+
+    depends_on:
+      - db # (Не запускать 'web', пока не запустится 'db')
+
+    command: sh -c "sleep 5 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      # Мы запускаем миграции здесь (при старте), а не в Dockerfile
+
+# Определяем 'тома' (хранилища)
+volumes:
+  db-data:
+  media-files:

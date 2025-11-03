@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'admin_interface',
     'colorfield',
     'users.apps.UsersConfig',
+    'store.apps.StoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'online_store_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,8 +78,16 @@ WSGI_APPLICATION = 'online_store_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME' берется из переменной окружения POSTGRES_DB,
+        # если ее нет, используется 'online_store_db'
+        'NAME': os.environ.get('POSTGRES_DB', 'online_store_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'store_admin'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'online_store_db'),
+        # 'HOST' берется из переменной POSTGRES_HOST (в Docker это будет 'db')
+        # если ее нет, используется 'localhost' (для локальной работы)
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -105,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -129,3 +138,12 @@ STATIC_ROOT = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Указываем Django использовать кастомную модель User
 AUTH_USER_MODEL = "users.User"
+# URL, по которому будут доступны загруженные пользователем файлы
+MEDIA_URL = '/media/'
+# Путь в файловой системе, куда будут сохраняться эти файлы
+MEDIA_ROOT = BASE_DIR / 'media'
+# URL-адрес для перенаправления после успешного входа
+LOGIN_REDIRECT_URL = 'users:profile'
+# URL-адрес для перенаправления после выхода
+LOGOUT_REDIRECT_URL = 'store:product_list'
+# URL-адрес для перенаправления после успешного входа
