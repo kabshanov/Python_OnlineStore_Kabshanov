@@ -134,3 +134,7 @@ STATIC_ROOT = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Указываем Django использовать кастомную модель User
 AUTH_USER_MODEL = "users.User"
+# URL, по которому будут доступны загруженные пользователем файлы
+MEDIA_URL = '/media/'
+# Путь в файловой системе, куда будут сохраняться эти файлы
+MEDIA_ROOT = BASE_DIR / 'media'
