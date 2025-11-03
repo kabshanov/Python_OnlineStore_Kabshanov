@@ -16,16 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings  # Импортируем настройки
-from django.conf.urls.static import static  # Импортируем помощник для статики
+from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Другие ваши URL-адреса...
+
+    # 2. Подключаем 'store.urls'
     path('', include('store.urls')),
+
+    # 3. Подключаем 'users.urls' по префиксу 'accounts/'
+    path('accounts/', include('users.urls')),
+
+    # 4. Перенаправляем главную страницу '/' на '/products/'
+    path('', RedirectView.as_view(url='/products/', permanent=True)),
 ]
 
-# Эта строка нужна ТОЛЬКО для режима разработки (DEBUG=True)
-# Она "приклеивает" URL-адреса для раздачи медиафайлов
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

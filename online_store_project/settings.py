@@ -58,7 +58,7 @@ ROOT_URLCONF = 'online_store_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,3 +138,7 @@ AUTH_USER_MODEL = "users.User"
 MEDIA_URL = '/media/'
 # Путь в файловой системе, куда будут сохраняться эти файлы
 MEDIA_ROOT = BASE_DIR / 'media'
+# URL-адрес для перенаправления после успешного входа
+LOGIN_REDIRECT_URL = 'users:profile'
+# URL-адрес для перенаправления после выхода
+LOGOUT_REDIRECT_URL = 'store:product_list'
