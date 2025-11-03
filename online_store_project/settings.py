@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -79,11 +79,15 @@ WSGI_APPLICATION = 'online_store_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'online_store_db',
-        'USER': 'store_admin',
-        'PASSWORD': 'online_store_db',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        # 'NAME' берется из переменной окружения POSTGRES_DB,
+        # если ее нет, используется 'online_store_db'
+        'NAME': os.environ.get('POSTGRES_DB', 'online_store_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'store_admin'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'online_store_db'),
+        # 'HOST' берется из переменной POSTGRES_HOST (в Docker это будет 'db')
+        # если ее нет, используется 'localhost' (для локальной работы)
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
 
